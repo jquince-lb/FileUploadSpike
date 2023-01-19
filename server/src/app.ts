@@ -1,12 +1,13 @@
+import dotenv from "dotenv";
 import express, { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import HttpErrors from "./middlewares/http-errors";
 
+dotenv.config();
+
 mongoose.set("strictQuery", true);
 mongoose
-	.connect(
-		`mongodb+srv://admin:bouzen3@cluster0.lfe0zat.mongodb.net/?retryWrites=true&w=majority`
-	)
+	.connect(`${process.env.MONGO_DB_URI}`)
 	.then(() => console.log("Connection to MongoDB success"))
 	.catch(() => console.log("Connection Failed"));
 
