@@ -4,7 +4,7 @@ import HttpErrors from "../middlewares/http-errors";
 import Files from "../models/Files";
 interface IFIle {
 	name: string;
-	path: string;
+	path: Express.Multer.File;
 	createdAt: string;
 }
 const uploadFiles: RequestHandler = (request, response, next) => {
@@ -17,11 +17,11 @@ const uploadFiles: RequestHandler = (request, response, next) => {
 		return next(error);
 	}
 
-	const { name, path } = request.body;
+	const { name } = request.body;
 
-	const uploadFile = new Files<IFIle>({
+	const uploadFile = new Files({
 		name,
-		path,
+		path: request.file?.path,
 		createdAt,
 	});
 
