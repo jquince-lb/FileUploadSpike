@@ -1,4 +1,5 @@
 import { Box, Button, Heading, Input, Stack, Text } from "@chakra-ui/react";
+import axios from "axios";
 
 import React, { useState } from "react";
 
@@ -13,9 +14,21 @@ const Form: React.FC = () => {
 		setFileName(event.target.files[0].name);
 	};
 
+	const sendData = new FormData();
 	const onSubmitData = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		console.log(file);
+		sendData.append("name", fileName);
+		sendData.append("path", file!);
+
+		axios
+			.post("http://localhost:3001/api/upload", sendData)
+			.then((response: any) => {
+				setFile("");
+				setFileName("");
+			})
+			.catch(error => {
+				console.log(error);
+			});
 	};
 	return (
 		<>
@@ -63,7 +76,7 @@ const Form: React.FC = () => {
 							left='0'
 							opacity='0'
 							aria-hidden='true'
-							accept='.jpg, .jpeg, .png, .svg, .gif, .zip'
+							accept='.jpg, .jpeg, .png, .svg, .gif, .txt, .pdf'
 							onChange={filePicker}
 						/>
 						{fileName}
