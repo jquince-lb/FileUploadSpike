@@ -1,6 +1,9 @@
+import { S3Client } from "@aws-sdk/client-s3";
+import AWS from "aws-sdk";
 import { randomUUID } from "crypto";
 import { Request } from "express";
-import multer, { diskStorage } from "multer";
+import multer from "multer";
+import multerS3 from "multer-s3";
 
 const MIME_TYPES: any = {
 	"image/jpg": "jpg",
@@ -12,12 +15,22 @@ const MIME_TYPES: any = {
 	"application/pdf": "pdf",
 };
 
+AWS.config.update({
+	accessKeyId: process.env.AWS_S3_ACCESS_KEY,
+	secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
+});
+const s3Config = new S3Client({
+	region: process.env.S3_REGION,
+});
+
 const uploadFile = multer({
-	storage: diskStorage({
-		destination: (request: Request, file: any, callback: Function) => {
-			callback(null, "./uploads/files");
+	storage: multerS3({
+		s3: s3Config,
+		bucket: "spike-lightbox",
+		metadata: (request: Request, file: any, callback: any) => {
+			callback(null, { fieldName: file.fieldname });
 		},
-		filename: (request: Request, file: any, callback: any) => {
+		key: (request: Request, file: any, callback: any) => {
 			const ext = MIME_TYPES[file.mimetype];
 			callback(null, randomUUID() + "." + ext);
 		},

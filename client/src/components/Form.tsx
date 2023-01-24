@@ -17,7 +17,7 @@ const Form: React.FC = () => {
 	const sendData = new FormData();
 	const onSubmitData = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		sendData.append("name", fileName);
+		// sendData.append("name", fileName);
 		sendData.append("path", file!);
 
 		axios
@@ -68,6 +68,7 @@ const Form: React.FC = () => {
 							</Stack>
 						</Box>
 						<Input
+							name='path'
 							type='file'
 							height='100%'
 							width='100%'
