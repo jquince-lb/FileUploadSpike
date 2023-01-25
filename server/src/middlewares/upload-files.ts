@@ -39,7 +39,7 @@ const uploadFile = (bucketName: string) =>
 				callback(null, { fieldName: file.fieldname });
 			},
 			key: (request: Request, file: Express.MulterS3.File, callback: any) => {
-				const ext = MIME_TYPES[file.mimetype];
+				const ext: string = MIME_TYPES[file.mimetype];
 				callback(null, randomUUID() + "." + ext);
 			},
 		}),
@@ -48,7 +48,7 @@ const uploadFile = (bucketName: string) =>
 			file: Express.MulterS3.File,
 			callback: any
 		) => {
-			const isTypeValid = !!MIME_TYPES[file.mimetype];
+			const isTypeValid: boolean = !!MIME_TYPES[file.mimetype];
 			let error = !isTypeValid && new Error("Invalid file Type");
 			callback(error, isTypeValid);
 		},
