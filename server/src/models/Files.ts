@@ -1,12 +1,12 @@
 import { model, Schema } from "mongoose";
 
-// interface IFIle {
-// 	name: string;
-// 	path: string;
-// 	createdAt: string;
-// }
+interface IFIle {
+	name: string;
+	path: string;
+	createdAt: string;
+}
 
-const fileSchema = new Schema({
+const fileSchema = new Schema<IFIle>({
 	name: { type: String, required: true },
 	path: { type: String, required: true },
 	createdAt: { type: String, required: true },

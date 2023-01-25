@@ -13,6 +13,9 @@ const MIME_TYPES: any = {
 	"image/svg": "svg",
 	"text/plain": "txt",
 	"application/pdf": "pdf",
+	"application/vnd.ms-excel": "xls",
+	"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "xlsx",
+	"text/csv": "csv",
 };
 
 AWS.config.update({
@@ -23,23 +26,32 @@ const s3Config = new S3Client({
 	region: process.env.S3_REGION,
 });
 
-const uploadFile = multer({
-	storage: multerS3({
-		s3: s3Config,
-		bucket: "spike-lightbox",
-		metadata: (request: Request, file: any, callback: any) => {
-			callback(null, { fieldName: file.fieldname });
+const uploadFile = (bucketName: string) =>
+	multer({
+		storage: multerS3({
+			s3: s3Config,
+			bucket: bucketName,
+			metadata: (
+				request: Request,
+				file: Express.MulterS3.File,
+				callback: any
+			) => {
+				callback(null, { fieldName: file.fieldname });
+			},
+			key: (request: Request, file: Express.MulterS3.File, callback: any) => {
+				const ext = MIME_TYPES[file.mimetype];
+				callback(null, randomUUID() + "." + ext);
+			},
+		}),
+		fileFilter: (
+			request: Request,
+			file: Express.MulterS3.File,
+			callback: any
+		) => {
+			const isTypeValid = !!MIME_TYPES[file.mimetype];
+			let error = !isTypeValid && new Error("Invalid file Type");
+			callback(error, isTypeValid);
 		},
-		key: (request: Request, file: any, callback: any) => {
-			const ext = MIME_TYPES[file.mimetype];
-			callback(null, randomUUID() + "." + ext);
-		},
-	}),
-	fileFilter: (request: Request, file: any, callback: any) => {
-		const isTypeValid = !!MIME_TYPES[file.mimetype];
-		let error = !isTypeValid && new Error("Invalid file Type");
-		callback(error, isTypeValid);
-	},
-});
+	});
 
 export default uploadFile;

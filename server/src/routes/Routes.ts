@@ -1,17 +1,16 @@
 import { Router } from "express";
+import { check } from "express-validator";
 import { uploadFiles } from "../controllers/Files";
-import uploadFile from "../middlewares/upload-files";
 
 const router = Router();
 
 router.post(
 	"/upload",
-	uploadFile.single("path"),
-	// [
-	// 	check("name").notEmpty(),
-	// 	check("path").notEmpty(),
-	// 	check("createdAt").notEmpty(),
-	// ],
+	[
+		check("name").notEmpty(),
+		check("path").notEmpty(),
+		check("createdAt").notEmpty(),
+	],
 	uploadFiles
 );
 

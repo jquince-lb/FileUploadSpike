@@ -77,7 +77,7 @@ const Form: React.FC = () => {
 							left='0'
 							opacity='0'
 							aria-hidden='true'
-							accept='.jpg, .jpeg, .png, .svg, .gif, .txt, .pdf'
+							accept='.jpg, .jpeg, .png, .svg, .gif, .txt, .pdf, .csv'
 							onChange={filePicker}
 						/>
 						{fileName}
