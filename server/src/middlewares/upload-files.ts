@@ -16,6 +16,9 @@ const MIME_TYPES: any = {
 	"application/vnd.ms-excel": "xls",
 	"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "xlsx",
 	"text/csv": "csv",
+	"application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+		"docx",
+	"application/msword": "doc",
 };
 
 AWS.config.update({

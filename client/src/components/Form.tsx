@@ -17,7 +17,6 @@ const Form: React.FC = () => {
 	const sendData = new FormData();
 	const onSubmitData = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		// sendData.append("name", fileName);
 		sendData.append("path", file!);
 
 		axios
@@ -25,6 +24,7 @@ const Form: React.FC = () => {
 			.then((response: any) => {
 				setFile("");
 				setFileName("");
+				console.log(response.data.message);
 			})
 			.catch(error => {
 				console.log(error);
@@ -77,7 +77,7 @@ const Form: React.FC = () => {
 							left='0'
 							opacity='0'
 							aria-hidden='true'
-							accept='.jpg, .jpeg, .png, .svg, .gif, .txt, .pdf, .csv'
+							accept='.jpg, .jpeg, .png, .svg, .gif, .txt, .pdf, .csv, .xlxs, .docx'
 							onChange={filePicker}
 						/>
 						{fileName}
