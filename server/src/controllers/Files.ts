@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import { validationResult } from "express-validator";
 import HttpErrors from "../middlewares/http-errors";
-import uploadFile from "../middlewares/upload-files";
+import { uploadFile } from "../middlewares/upload-files";
 import Files from "../models/Files";
 interface IFIle {
 	name: string;
@@ -38,5 +38,13 @@ const uploadFiles: RequestHandler = (request, response, next) => {
 			.catch(error => response.status(400).json({ error }));
 	});
 };
+const getAllFiles: RequestHandler = (request, response, next) => {
+	Files.find()
+		.then(files => response.status(200).json({ files }))
+		.catch(error => {
+			error = new HttpErrors("The Database is empty", 404);
+			return next(error);
+		});
+};
 
-export { uploadFiles };
+export { uploadFiles, getAllFiles };

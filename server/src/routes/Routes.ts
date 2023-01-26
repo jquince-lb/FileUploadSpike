@@ -1,9 +1,10 @@
 import { Router } from "express";
 import { check } from "express-validator";
-import { uploadFiles } from "../controllers/Files";
+import { getAllFiles, uploadFiles } from "../controllers/Files";
 
 const router = Router();
 
+router.get("/files", getAllFiles);
 router.post(
 	"/upload",
 	[

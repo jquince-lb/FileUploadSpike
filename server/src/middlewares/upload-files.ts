@@ -54,4 +54,4 @@ const uploadFile = (bucketName: string) =>
 		},
 	});
 
-export default uploadFile;
+export { uploadFile };
