@@ -26,7 +26,6 @@ const FileList: React.FC<Props> = ({ files }) => {
 							<Tr>
 								<Th>File name</Th>
 								<Th>Donwload</Th>
-								<Th>Delete</Th>
 							</Tr>
 						</Thead>
 						<Tbody>
@@ -36,11 +35,6 @@ const FileList: React.FC<Props> = ({ files }) => {
 									<Td>
 										<Button colorScheme='green' variant='outline'>
 											<a href={file.path}>Download</a>
-										</Button>
-									</Td>
-									<Td>
-										<Button colorScheme='red' variant='outline'>
-											<a href={""}>Delete</a>
 										</Button>
 									</Td>
 								</Tr>

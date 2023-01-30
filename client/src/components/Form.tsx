@@ -12,8 +12,6 @@ import axios from "axios";
 import React, { useState } from "react";
 import StatusModal from "./StatusModal";
 
-// import StatusModal from './StatusModal';
-
 const Form: React.FC = () => {
 	const [fileName, setFileName] = useState<string>("");
 	const [file, setFile] = useState<string | Blob>();
