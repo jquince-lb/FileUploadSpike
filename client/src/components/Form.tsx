@@ -1,13 +1,24 @@
-import { Box, Button, Heading, Input, Stack, Text } from "@chakra-ui/react";
+import {
+	Box,
+	Button,
+	Heading,
+	Input,
+	Stack,
+	Text,
+	useDisclosure,
+} from "@chakra-ui/react";
 import axios from "axios";
 
 import React, { useState } from "react";
+import StatusModal from "./StatusModal";
 
 // import StatusModal from './StatusModal';
 
 const Form: React.FC = () => {
 	const [fileName, setFileName] = useState<string>("");
 	const [file, setFile] = useState<string | Blob>();
+	const [isError, setIsError] = useState(false);
+	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const filePicker = (event: any) => {
 		setFile(event.target.files[0]);
@@ -17,21 +28,30 @@ const Form: React.FC = () => {
 	const sendData = new FormData();
 	const onSubmitData = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		if (!file) {
+			setIsError(true);
+			onOpen();
+			return;
+		}
 		sendData.append("path", file!);
 
 		axios
 			.post("http://localhost:3001/api/upload", sendData)
 			.then((response: any) => {
+				setIsError(false);
 				setFile("");
 				setFileName("");
 				console.log(response.data.message);
 			})
 			.catch(error => {
+				setIsError(false);
 				console.log(error);
 			});
+		onOpen();
 	};
 	return (
 		<>
+			<StatusModal isOpen={isOpen} onClose={onClose} isError={isError} />
 			<form onSubmit={onSubmitData}>
 				<Box
 					h='20rem'
