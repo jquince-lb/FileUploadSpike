@@ -1,5 +1,7 @@
 import { model, Schema } from "mongoose";
-
+/**
+ * MONGO DB SCHEMA
+ */
 interface IFIle {
 	name: string;
 	path: string;

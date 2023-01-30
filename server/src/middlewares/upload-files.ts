@@ -5,6 +5,9 @@ import { Request } from "express";
 import multer from "multer";
 import multerS3 from "multer-s3";
 
+/**
+ * This list is filtering different type of files we allow users to upload to the server
+ */
 const MIME_TYPES: any = {
 	"image/jpg": "jpg",
 	"image/jpeg": "jpeg",
@@ -21,6 +24,9 @@ const MIME_TYPES: any = {
 	"application/msword": "doc",
 };
 
+/**
+ *
+ */
 AWS.config.update({
 	accessKeyId: process.env.AWS_S3_ACCESS_KEY,
 	secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
@@ -28,7 +34,10 @@ AWS.config.update({
 const s3Config = new S3Client({
 	region: process.env.S3_REGION,
 });
-
+/**
+ * This function is using Multer to store the file and filter the file type.
+ * Multer S3 gives multer access to the bucket to store the file
+ */
 const uploadFile = (bucketName: string) =>
 	multer({
 		storage: multerS3({

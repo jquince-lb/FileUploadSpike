@@ -8,7 +8,7 @@ const normalizePort = (val: any) => {
 	return false;
 };
 
-const port = normalizePort(process.env.PORT || "3001z");
+const port = normalizePort(process.env.PORT || "3001");
 app.set("port", port);
 
 const errorHandler = (error: any) => {
