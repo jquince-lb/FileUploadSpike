@@ -1,6 +1,6 @@
 # Node.js REST API for Uploading Files to S3 and Saving URLs to MongoDB
 
-# Enpoints
+# Endpoints
 ## POST /api/upload
 
 Uploads a file to the specified S3 bucket and saves the returned URL to the MongoDB database.
@@ -17,6 +17,7 @@ Uploads a file to the specified S3 bucket and saves the returned URL to the Mong
 - - success: true/false indicating whether the upload and database save were successful or not.
 - - message: A string describing the result of the upload and save.
 
+## GET /api/files
 ### Request
 - Method: GET
 
