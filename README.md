@@ -47,7 +47,9 @@ access key ID.
 - MONGO_DB_URI: The URI for connecting to the MongoDB database.
 - S3_REGION: Where the bucket is located
 
+
 ### Communication Flow
+![s3upload01-700x481](https://user-images.githubusercontent.com/104788395/217636591-0f8edc07-65f7-4f6e-afcd-dd3cf4e93290.jpeg)
 Here is a high-level overview of the communication flow between the client, server, API, and S3 bucket:
 1. The client sends a POST request to the API endpoint "/api/upload" with the file to be uploaded in the body of the request.
 2. The API receives the request and uses the AWS SDK/Multer/MulterS3 to upload the file to the specified S3 bucket.
