@@ -49,7 +49,7 @@ access key ID.
 
 
 ### Communication Flow
-![s3upload01-700x481](https://user-images.githubusercontent.com/104788395/217636591-0f8edc07-65f7-4f6e-afcd-dd3cf4e93290.jpeg)
+
 Here is a high-level overview of the communication flow between the client, server, API, and S3 bucket:
 1. The client sends a POST request to the API endpoint "/api/upload" with the file to be uploaded in the body of the request.
 2. The API receives the request and uses the AWS SDK/Multer/MulterS3 to upload the file to the specified S3 bucket.
@@ -60,3 +60,6 @@ MongoDB database.
 the upload and database save were successful or not.
 
 - This process enables the client to upload a file to S3 and store the URL for the file in a database, allowing for future retrieval of the file through the URL.
+
+
+![s3upload01-700x481](https://user-images.githubusercontent.com/104788395/217636591-0f8edc07-65f7-4f6e-afcd-dd3cf4e93290.jpeg)
