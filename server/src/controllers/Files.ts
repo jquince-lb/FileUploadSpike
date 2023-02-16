@@ -1,11 +1,10 @@
 import { RequestHandler } from "express";
 import { validationResult } from "express-validator";
 import HttpErrors from "../middlewares/http-errors";
-import { uploadFile } from "../middlewares/upload-files";
+import { downloadFile, uploadFile } from "../middlewares/upload-files";
 import Files from "../models/Files";
 interface IFIle {
 	name: string;
-	path: string;
 	createdAt: string;
 }
 
@@ -26,7 +25,7 @@ const uploadFiles: RequestHandler = (request, response, next) => {
 		return next(error);
 	}
 
-	const upload = uploadFile(process.env.BUCKET_NAME!).single("path");
+	const upload = uploadFile(process.env.BUCKET_NAME!).single("file");
 
 	upload(request, response, async error => {
 		if (error) return response.status(400).json({ message: error.message });
@@ -35,7 +34,6 @@ const uploadFiles: RequestHandler = (request, response, next) => {
 
 		const uploadFile = new Files<IFIle>({
 			name: uploadedFile?.key,
-			path: uploadedFile?.location,
 			createdAt,
 		});
 
@@ -64,4 +62,14 @@ const getAllFiles: RequestHandler = (request, response, next) => {
 		});
 };
 
-export { uploadFiles, getAllFiles };
+const downloadFiles: RequestHandler = async (request, response, next) => {
+	const key = request.params.key;
+
+	const result = await downloadFile(process.env.BUCKET_NAME!, key);
+
+	if (result) {
+		response.status(200).send(result);
+	}
+};
+
+export { uploadFiles, getAllFiles, downloadFiles };

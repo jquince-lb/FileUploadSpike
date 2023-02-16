@@ -31,7 +31,7 @@ const Form: React.FC = () => {
 			onOpen();
 			return;
 		}
-		sendData.append("path", file!);
+		sendData.append("file", file!);
 
 		axios
 			.post("http://localhost:3001/api/upload", sendData)

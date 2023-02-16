@@ -15,6 +15,7 @@ import React from "react";
 interface Props {
 	files: any;
 }
+
 const FileList: React.FC<Props> = ({ files }) => {
 	return (
 		<Flex alignItems='center' justifyContent='center'>
@@ -26,6 +27,7 @@ const FileList: React.FC<Props> = ({ files }) => {
 							<Tr>
 								<Th>File name</Th>
 								<Th>Donwload</Th>
+								<Th>Delete</Th>
 							</Tr>
 						</Thead>
 						<Tbody>
@@ -33,8 +35,16 @@ const FileList: React.FC<Props> = ({ files }) => {
 								<Tr key={file._id}>
 									<Td>{file.name}</Td>
 									<Td>
-										<Button colorScheme='green' variant='outline'>
-											<a href={file.path}>Download</a>
+										<Button
+											onClick={() => console.log(file.name)}
+											colorScheme='green'
+											variant='outline'>
+											Download
+										</Button>
+									</Td>
+									<Td>
+										<Button colorScheme='red' variant='outline'>
+											Delete
 										</Button>
 									</Td>
 								</Tr>
