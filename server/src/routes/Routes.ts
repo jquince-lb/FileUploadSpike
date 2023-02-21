@@ -1,6 +1,11 @@
 import { Router } from "express";
 import { check } from "express-validator";
-import { downloadFiles, getAllFiles, uploadFiles } from "../controllers/Files";
+import {
+	deleteFiles,
+	downloadFiles,
+	getAllFiles,
+	uploadFiles,
+} from "../controllers/Files";
 
 const router = Router();
 
@@ -11,5 +16,6 @@ router.post(
 	[check("name").notEmpty(), check("createdAt").notEmpty()],
 	uploadFiles
 );
+router.delete("/files/:key", deleteFiles);
 
 export default router;

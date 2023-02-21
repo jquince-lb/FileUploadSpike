@@ -1,7 +1,11 @@
 import { RequestHandler } from "express";
 import { validationResult } from "express-validator";
+import {
+	deleteFile,
+	downloadFile,
+	uploadFile,
+} from "../middlewares/files-handler";
 import HttpErrors from "../middlewares/http-errors";
-import { downloadFile, uploadFile } from "../middlewares/upload-files";
 import Files from "../models/Files";
 interface IFIle {
 	name: string;
@@ -53,13 +57,16 @@ const uploadFiles: RequestHandler = (request, response, next) => {
  * @param {Object} response - Express Framework Response Object
  * @param {function} next - Express middleware function
  */
-const getAllFiles: RequestHandler = (request, response, next) => {
-	Files.find()
-		.then(files => response.status(200).json({ files }))
-		.catch(error => {
-			error = new HttpErrors("The Database is empty", 404);
-			return next(error);
-		});
+const getAllFiles: RequestHandler = async (request, response, next) => {
+	try {
+		const files = await Files.find();
+		if (files) {
+			response.status(200).json({ files });
+		}
+	} catch (error) {
+		error = new HttpErrors("The Database is empty", 404);
+		return next(error);
+	}
 };
 
 const downloadFiles: RequestHandler = async (request, response, next) => {
@@ -68,8 +75,27 @@ const downloadFiles: RequestHandler = async (request, response, next) => {
 	const result = await downloadFile(process.env.BUCKET_NAME!, key);
 
 	if (result) {
-		response.status(200).send(result);
+		response.status(200).json({ result });
+		return;
+	}
+	const error = new HttpErrors("Can't download the file", 500);
+	next(error);
+};
+
+const deleteFiles: RequestHandler = async (request, response, next) => {
+	const key = request.params.key;
+	try {
+		const resultDatabase = await Files.findOneAndDelete({ name: key }).exec();
+		const resultBucket = await deleteFile(process.env.BUCKET_NAME!, key);
+		if (resultDatabase && resultBucket) {
+			response
+				.status(200)
+				.json({ message: "Successfully deleted from database and storage" });
+		}
+	} catch (error) {
+		error = new HttpErrors("Error deleting the file", 400);
+		return next(error);
 	}
 };
 
-export { uploadFiles, getAllFiles, downloadFiles };
+export { uploadFiles, getAllFiles, downloadFiles, deleteFiles };

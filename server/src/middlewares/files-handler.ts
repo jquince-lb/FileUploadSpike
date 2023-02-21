@@ -1,4 +1,8 @@
-import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import {
+	DeleteObjectCommand,
+	GetObjectCommand,
+	S3Client,
+} from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import AWS from "aws-sdk";
 import { randomUUID } from "crypto";
@@ -83,4 +87,18 @@ const downloadFile = async (bucketName: string, key: string) => {
 	}
 };
 
-export { uploadFile, downloadFile };
+const deleteFile = async (bucketName: string, key: string) => {
+	try {
+		const fileParams: any = new DeleteObjectCommand({
+			Key: key,
+			Bucket: bucketName,
+		});
+		const response = await s3Config.send(fileParams);
+
+		return response;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+export { uploadFile, downloadFile, deleteFile };
